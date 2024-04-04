@@ -9,5 +9,6 @@ services:
    - ./core:/app
   ports:
    - "8000:8000"
-  # environment:
-  #  - DJANGO_SETTINGS_MODULE=core.settings
+  environment:
+   - SECRET_KEY=test
+   - DEBUG=True
