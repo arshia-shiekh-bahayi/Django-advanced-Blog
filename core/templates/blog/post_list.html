@@ -5,17 +5,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        #logged {
+            position: absolute;
+            right: 10px;
+            top: 0px;
+            color: dimgrey;
+            font-size: 0.5cm;
+        }
+    </style>
 </head>
 
 <body>
+    <h3 id="logged">logged in as {{request.user}}</h3>
     <h1>blog posts</h1>
     {% for post in posts %}
     <div>
-        <a href="{% url 'blog:post-detail' pk=post.id %}"><h2>{{post.id}}.{{post.title}}</h2></a>
+        <a href="{% url 'blog:post-detail' pk=post.id %}">
+            <h2>{{post.id}}.{{post.title}}</h2>
+        </a>
+
         <p>{{post.content}} - {{post.published_date}}</p>
         {% if post.image %}
         <img src="{{post.image.url}}" alt="">
         {% endif %}
+        {{post.author}}
     </div>
     {% endfor %}
     <div class="pagination">

@@ -5,15 +5,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{post.title}}</title>
+    <style>
+        #Delete {
+            position: absolute;
+            top: 600px;
+            left: 1470px;
+        }
+    </style>
 </head>
 
 <body>
-    <h1>{{object.title}}</h1>
-    <hr>
-    <small>{{object.author}} - {{object.published_date}}</small>
 
+    <h1>{{object.title}}</h1>
+    {% if request.user == post.author %}
+    <a href="{% url 'blog:post-edit' pk=post.id %}">
+        <h5>Edit</h5>
+    </a>
+    {% endif %}
+    <hr>
+    <small>{{object.author}} - {{object.published_date}}</small><br>
+    {% if request.user == post.author %}
+    <a id="Delete" href="{% url 'blog:post-delete' pk=post.id %}">Delete</a>
+    {% endif %}
     <p>{{object.content}}</p>
     <a href="{% url 'blog:post-list' %}">back to main blog page</a>
+
 </body>
 
 </html>
