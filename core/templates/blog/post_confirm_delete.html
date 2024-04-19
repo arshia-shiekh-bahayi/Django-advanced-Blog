@@ -26,7 +26,7 @@
     <form method="post">{% csrf_token %}
         <p id="delete_message">Are you sure you want to delete "{{object}}" ?</p>
         <input type="submit" value="Confirm">
-        <input type="submit" value="Cancel">
+        <button ><a href="{% url 'blog:post-detail' pk=post.id %}">Cancel</a></button>
     </form>
     {% else %}
     <p id="error_message">you are not the author of this post so you can not delete it</p>

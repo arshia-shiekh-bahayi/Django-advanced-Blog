@@ -11,11 +11,19 @@
             top: 600px;
             left: 1470px;
         }
+        #logged {
+                position: absolute;
+                right: 10px;
+                top: 0px;
+                color: dimgrey;
+                font-size: 0.5cm;
+        }
+        
     </style>
 </head>
 
 <body>
-
+    <h3 id="logged">logged in as {{request.user}}</h3>
     <h1>{{object.title}}</h1>
     {% if request.user == post.author %}
     <a href="{% url 'blog:post-edit' pk=post.id %}">
@@ -23,7 +31,7 @@
     </a>
     {% endif %}
     <hr>
-    <small>{{object.author}} - {{object.published_date}}</small><br>
+    <small>{{object.author.first_name}} - {{object.published_date}}</small><br>
     {% if request.user == post.author %}
     <a id="Delete" href="{% url 'blog:post-delete' pk=post.id %}">Delete</a>
     {% endif %}
