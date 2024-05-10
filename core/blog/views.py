@@ -11,7 +11,8 @@ from rest_framework.decorators import *
 from rest_framework.response import Response
 # Create your views here.
 def redirect_main(request):
-    return redirect('blog:api-post-list')
+    pass
+    # return redirect('blog:api-post-list')
 class IndexView(TemplateView):
     template_name = 'index.html'
     def get_context_data(self , **kwargs):
