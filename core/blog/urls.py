@@ -9,5 +9,5 @@ urlpatterns = [
     path('post/<int:pk>/edit/', PostEditView.as_view(), name='post-edit'),
     path('post/<int:pk>/delete/', PostDeleteView.as_view(), name='post-delete'),
     path('', redirect_main, name='redirect'),
-    path('api/v1/', include('blog.api.v1.urls'))
+    path('api/v1/', include('blog.api.v1.urls'),name='api')
 ]
