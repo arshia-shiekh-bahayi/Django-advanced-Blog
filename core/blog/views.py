@@ -3,6 +3,7 @@ from django.db.models.query import QuerySet
 from django.forms import BaseModelForm
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 from django.views.generic import *
 from .models import *
 from .forms import *
@@ -11,7 +12,9 @@ from rest_framework.decorators import *
 from rest_framework.response import Response
 # Create your views here.
 def redirect_main(request):
-     return redirect('blog:post-list')
+     return HttpResponse("We are working on this page")
+    #  return redirect('blog:api')
+
 class IndexView(TemplateView):
     template_name = 'index.html'
     def get_context_data(self , **kwargs):
@@ -69,7 +72,6 @@ class PostEditView(LoginRequiredMixin,UpdateView):
     model = Post
     form_class = PostForm
     success_url = '/blog/post/'
-
 
 class PostDeleteView(LoginRequiredMixin,DeleteView):
     model = Post
