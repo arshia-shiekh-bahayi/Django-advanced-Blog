@@ -57,10 +57,6 @@ class Profile(models.Model):
     def __str__(self):
         return self.user.email
 
-'''This function is a signal receiver that is connected to the 'post_save' signal of the 'User' model. When
-a new 'User' instance is created, this function will be called. If the 'created' parameter is True, it means that  
-a new 'User' instance has been created, and the function will create a new 'Profile' instance for this user.'''
-
 @receiver(post_save, sender=User)
 def save_profile(sender, instance, created, **kwargs):
     """A function to order the profile model to create a new profile when a new user is created"""
