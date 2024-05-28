@@ -11,68 +11,38 @@ from django.contrib.auth.mixins import *
 from rest_framework.decorators import *
 from rest_framework.response import Response
 # Create your views here.
+"""A function based view to redirect users to post-list with ('post/) url """
 def redirect_main(request):
-     return HttpResponse("We are working on this page")
-    #  return redirect('blog:api')
+    return redirect('api/v1/post/')
 
-class IndexView(TemplateView):
-    template_name = 'index.html'
-    def get_context_data(self , **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["name"] = "ali"
-        context["posts"] = Post.objects.all()
-        return context
-
-""" def RedirectToMaktab(request):
-     return redirect('http://maktabkhooneh.com')"""
-
-class RedirectToMaktab(RedirectView):
-    url = "http://maktabkhooneh.com"
-
-    def get_redirect_url(self, *args, **kwargs):
-        post = get_object_or_404(Post, pk=kwargs['pk'])
-        print(post)
-        return super().get_redirect_url(*args, **kwargs)
-    
+"""A class based view inheriting from Django Generic Views (ListView) to show a list of objects of model post """    
 class PostListView(PermissionRequiredMixin,LoginRequiredMixin,ListView):
-
     permission_required = 'blog.view_post'
-    queryset = Post.objects.all()
+    queryset = Post.objects.filter(status=1)
     context_object_name = 'posts'
     paginate_by = 1
     ordering = '-created_date'
 
-    # def get_queryset(self):
-        # posts = Post.objects.filter(status = 1)
-        # return posts
-
+"""A class based view inheriting from Django Generic Views (DetailVIew) to show details of an object of a models by Pk"""
 class PostDetailView(LoginRequiredMixin,DetailView):
     model = Post
-    
-"""class PostCreateView(FormView):
 
-    template_name = 'contact.html'
-    form_class = PostForm
-    success_url = '/blog/post'
-
-    def form_valid(self, form):
-        form.save()
-        return super().form_valid(form)"""
-
+"""A class based view inheriting from Django Generic Views (CreateView) to show a form for creating a object of a model and creating it"""
 class PostCreateView(LoginRequiredMixin,CreateView):
     model = Post
-    # fields = ['author', 'title', 'content', 'status', 'category', 'published_date']
     form_class = PostForm
     success_url = '/blog/post'
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
-    
+
+"""A class based view inheriting from Django Generic Views (UpdateView) to show a filled form for updating a model"""    
 class PostEditView(LoginRequiredMixin,UpdateView):
     model = Post
     form_class = PostForm
     success_url = '/blog/post/'
 
+"""A class based view inheriting from Django Generic Views (DeleteView) to delete a object of a model"""
 class PostDeleteView(LoginRequiredMixin,DeleteView):
     model = Post
     success_url = '/blog/post'

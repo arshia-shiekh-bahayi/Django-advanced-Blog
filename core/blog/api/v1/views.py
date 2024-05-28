@@ -1,15 +1,16 @@
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import *
 from rest_framework.permissions import *
-from rest_framework.response import Response
-from rest_framework import status , mixins
+from rest_framework.response import *
+from rest_framework import viewsets
 from rest_framework.views import *
 from rest_framework.generics import *
-from blog.models import Post
+from blog.models import *
 from .serializers import *
 from django.shortcuts import get_object_or_404
 
-
-"""@api_view(["GET", "POST"])
+# Example of function based view for api
+"""An function based api view that allows the user to get a list of all objects of post model and also creating a new one"""
+'''@api_view(["GET", "POST"])
 @permission_classes([IsAuthenticated])
 def postList(request):
     if request.method == "GET":
@@ -20,35 +21,8 @@ def postList(request):
         serializer = PostSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response(serializer.data)"""
-
-'''class PostList(APIView):
-    """getting a list of posts and creating new post"""
-    permission_classes = [IsAuthenticated]
-    serializer_class = PostSerializer
-    def get(self, request):
-        """retrieving a list of posts """
-        posts = Post.objects.filter(status=True)
-        serializer = PostSerializer(posts, many=True)
-        return Response(serializer.data)
-
-    def post(self, request):
-        """creating a post with provided data"""
-        serializer = PostSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data)
-'''
-
-
-class PostList(ListCreateAPIView):
-    """getting a list of posts and creating new post"""
-    permission_classes = [IsAuthenticated]
-    serializer_class = PostSerializer
-    queryset = Post.objects.filter(status=True)
-
-
-
+        return Response(serializer.data)'''
+"""An function based api view that allows the user to get a certain object of post model and deleting it or editing it"""
 '''@api_view(["GET", "PUT", "DELETE"])
 def postDetail(request, id):
     post = get_object_or_404(Post, pk=id, status=True)
@@ -65,6 +39,8 @@ def postDetail(request, id):
         return Response({"detail": "Item removed successfully"}, status=status.HTTP_204_NO_CONTENT)
 '''
 
+# Example of class based view for api
+"""An class based view api that inherits from APIView and allows the user to get a certain object of post model and deleting it or editing it"""
 '''class PostDetail(APIView):
     """ getting detail of a post and edit + delete """
     permission_classes = [IsAuthenticated]
@@ -89,9 +65,64 @@ def postDetail(request, id):
         post.delete()
         return Response({"detail": "Item removed successfully"}, status=status.HTTP_204_NO_CONTENT)
 '''
+"""An class based view api that inherits from APIView and allows the user to get a list of all objects of post model and also creating a new one"""
+'''class PostList(APIView):
+    """getting a list of posts and creating new post"""
+    permission_classes = [IsAuthenticated]
+    serializer_class = PostSerializer
+    def get(self, request):
+        """retrieving a list of posts """
+        posts = Post.objects.filter(status=True)
+        serializer = PostSerializer(posts, many=True)
+        return Response(serializer.data)
 
-class PostDetail(RetrieveUpdateDestroyAPIView):
+    def post(self, request):
+        """creating a post with provided data"""
+        serializer = PostSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+'''
+
+# Example of generic api views
+"""An class based api view that inherits from ListCreateAPIView and allows the user to get a list of all objects of post model and also creating a new one"""
+'''class PostList(ListCreateAPIView):
+    """getting a list of posts and creating new post"""
+    permission_classes = [IsAuthenticated]
+    serializer_class = PostSerializer
+    queryset = Post.objects.filter(status=True)'''
+"""An class based api view that inherits from RetrieveUpdateDestroyAPIView and allows the user to get a certain object of post model and deleting it or editing it"""
+'''class PostDetail(RetrieveUpdateDestroyAPIView):
+    """getting a special post by its id and editing it or deleting it"""
+    permission_classes = [IsAuthenticated]
+    serializer_class = PostSerializer
+    queryset = Post.objects.filter(status=True)'''
+
+class PostViewSet(viewsets.ViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = PostSerializer
     queryset = Post.objects.filter(status=True)
+    def list(self,request):
+        serializer = self.serializer_class(self.queryset,many=True)
+        return Response(serializer.data)
     
+    def retrieve(self,request, pk=None):
+        post_object = get_object_or_404(self.queryset,pk=pk)
+        serializer = self.serializer_class(post_object)
+        return Response(serializer.data)   
+    
+    def create(self, request):
+        """creating a post with provided data"""
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+    
+    def update(self,request, pk=None):
+        return Response("Your process would not be completed because this feature isn't completed yet")
+    
+    def partial_update(self,request,pk=None):
+        return Response("Your process would not be completed because this feature isn't completed yet")
+    
+    def destroy(self,request,pk=None):
+        return Response("Your process would not be completed because this feature isn't completed yet")

@@ -1,10 +1,6 @@
 from rest_framework import serializers
 from blog.models import Post
-
-# class PostSerializer(serializers.Serializer):
-#     id = serializers.IntegerField()
-#     title = serializers.CharField(max_length=255)
-
+"""A serializer class that can be used to serialize a post"""
 class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
