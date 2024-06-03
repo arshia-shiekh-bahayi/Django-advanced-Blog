@@ -98,31 +98,13 @@ def postDetail(request, id):
     serializer_class = PostSerializer
     queryset = Post.objects.filter(status=True)'''
 
-class PostViewSet(viewsets.ViewSet):
+#Example of ModelViewSet api views
+class PostModelViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = PostSerializer
     queryset = Post.objects.filter(status=True)
-    def list(self,request):
-        serializer = self.serializer_class(self.queryset,many=True)
-        return Response(serializer.data)
-    
-    def retrieve(self,request, pk=None):
-        post_object = get_object_or_404(self.queryset,pk=pk)
-        serializer = self.serializer_class(post_object)
-        return Response(serializer.data)   
-    
-    def create(self, request):
-        """creating a post with provided data"""
-        serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data)
-    
-    def update(self,request, pk=None):
-        return Response("Your process would not be completed because this feature isn't completed yet")
-    
-    def partial_update(self,request,pk=None):
-        return Response("Your process would not be completed because this feature isn't completed yet")
-    
-    def destroy(self,request,pk=None):
-        return Response("Your process would not be completed because this feature isn't completed yet")
+
+class CategoryModelViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    serializer_class = CategorySerializer
+    queryset = Category.objects.all()

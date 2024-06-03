@@ -11,6 +11,6 @@ urlpatterns = [
     path('post/create', PostCreateView.as_view(), name='post-create'),    
     path('post/<int:pk>/edit/', PostEditView.as_view(), name='post-edit'),
     path('post/<int:pk>/delete/', PostDeleteView.as_view(), name='post-delete'),
-    # a path to include paths in api/v1/urls.py 
+    # A path to include paths in api/v1/urls.py 
     path('api/v1/', include('blog.api.v1.urls'),name='api-v1'),
 ]

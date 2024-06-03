@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from accounts.models import *
+from django.urls import reverse
 # Create your models here.
 
 """A model using in blog app. contains different parts and works like a twit """
@@ -16,6 +17,10 @@ class Post(models.Model):
     published_date = models.DateTimeField()
     def __str__(self):
         return self.title
+    def get_snippet(self):
+       return self.content[0:5]
+    def get_absolute_api_url(self):
+       return reverse("blog:api-v1:post-detail", kwargs={"pk":self.pk})
 
 """A model that just have a name. It is used with a many-to-many relationship to category part in post model"""
 class Category(models.Model):
