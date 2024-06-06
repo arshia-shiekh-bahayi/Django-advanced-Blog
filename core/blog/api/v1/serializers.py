@@ -25,10 +25,9 @@ class PostSerializer(serializers.ModelSerializer):
         return request.build_absolute_uri(obj.pk)
     
     def author_real_name(self,obj):
-        req = obj.author.id
         prof  = Profile.objects.get(user__id=self.context.get('request').user.id)
-        print(prof)
-        return prof.last_name
+        prof = str(prof.user.email)
+        return prof
     def to_representation(self, instance):
         request = self.context.get('request')
         rep = super().to_representation(instance)
