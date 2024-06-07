@@ -7,7 +7,8 @@ from rest_framework.generics import *
 from blog.models import *
 from .serializers import *
 from django.shortcuts import get_object_or_404
-
+from .permissions import *
+from django_filters.rest_framework import DjangoFilterBackend
 # Example of function based view for api
 """An function based api view that allows the user to get a list of all objects of post model and also creating a new one"""
 '''@api_view(["GET", "POST"])
@@ -100,10 +101,11 @@ def postDetail(request, id):
 
 #Example of ModelViewSet api views
 class PostModelViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
     serializer_class = PostSerializer
     queryset = Post.objects.filter(status=True)
-
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['author','category','title','published_date']
 class CategoryModelViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly]
     serializer_class = CategorySerializer
