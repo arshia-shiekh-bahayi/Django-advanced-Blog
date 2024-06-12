@@ -9,6 +9,8 @@ from .serializers import *
 from django.shortcuts import get_object_or_404
 from .permissions import *
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter , OrderingFilter
+from .paginations import *
 # Example of function based view for api
 """An function based api view that allows the user to get a list of all objects of post model and also creating a new one"""
 '''@api_view(["GET", "POST"])
@@ -104,8 +106,11 @@ class PostModelViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
     serializer_class = PostSerializer
     queryset = Post.objects.filter(status=True)
-    filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['author','category','title','published_date']
+    filter_backends = [DjangoFilterBackend,SearchFilter,OrderingFilter]
+    filterset_fields = {'category':["exact","in"],'author':["exact"],'title':["exact"]}
+    search_fields = ['title','content']
+    ordering_fields = ['published_date']
+    # pagination_class = pagination
 class CategoryModelViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly]
     serializer_class = CategorySerializer
