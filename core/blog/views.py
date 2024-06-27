@@ -13,7 +13,7 @@ from rest_framework.response import Response
 # Create your views here.
 """A function based view to redirect users to post-list with ('post/) url """
 def redirect_main(request):
-    return redirect('api/v1/post/')
+    return redirect('accounts/api/v1/registration/')
 
 """A class based view inheriting from Django Generic Views (ListView) to show a list of objects of model post """    
 class PostListView(PermissionRequiredMixin,LoginRequiredMixin,ListView):

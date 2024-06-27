@@ -5,6 +5,7 @@
         "Maktab",
         "maktabkhooneh",
         "paginations",
+        "simplejwt",
         "viewsets",
         "yasg"
     ]
